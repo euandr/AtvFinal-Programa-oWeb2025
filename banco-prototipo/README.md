@@ -86,6 +86,7 @@ banco-simulado/
 - Limites de valor para transferências PIX (máximo R$ 5.000,00)
 - Verificação de saldo antes de transações
 
-## 📄 Licença
+# Demonstração do Sistema
 
-Este projeto foi desenvolvido para fins educacionais como parte de uma atividade final de disciplina.
+![Demonstração do site](arquivosEscola/atvfinalPW.gif)
+
