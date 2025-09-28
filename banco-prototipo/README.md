@@ -90,4 +90,4 @@ banco-simulado/
 
 ![Demonstração do site](https://github.com/euandr/euandr/blob/main/arquivosEscola/atvfinalPW.gif?raw=true)
 
-
+> **Observação:** A qualidade do vídeo está baixa, por isso algumas funções podem parecer diferentes do real.
