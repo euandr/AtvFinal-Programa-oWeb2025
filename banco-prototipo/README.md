@@ -56,36 +56,6 @@ banco-simulado/
    - Realize transferências PIX com formatação automática
    - Consulte seu extrato com filtros
 
-## 💳 Funcionalidades PIX Detalhadas
-
-### **Seleção de Tipo de Chave**
-- **E-mail**: Formatação automática para minúsculo
-- **Celular**: Formatação como (11) 99999-9999
-- **CPF**: Formatação como 123.456.789-00
-- **Chave Aleatória**: Limitação a 36 caracteres
-
-### **Formatação Monetária**
-- Valores formatados da direita para esquerda
-- Exemplo: Digite `123` → aparece `1,23`
-- Suporte a valores até R$ 999.999,99
-
-### **Validação Inteligente**
-- Validação específica para cada tipo de chave
-- Mensagens de erro personalizadas
-- Verificação de DDD para telefones
-- Limite máximo de R$ 5.000,00 por transação
-
-## 🔐 Segurança
-
-- Validação de entrada em todos os formulários
-- Validação específica de chaves PIX por tipo:
-  - **E-mail**: Validação de formato de e-mail
-  - **Celular**: Validação de DDD e 11 dígitos
-  - **CPF**: Validação de 11 dígitos
-  - **Chave Aleatória**: Validação de 36 caracteres
-- Limites de valor para transferências PIX (máximo R$ 5.000,00)
-- Verificação de saldo antes de transações
-
 # Demonstração do Sistema
 
 ![Demonstração do site](https://github.com/euandr/euandr/blob/main/arquivosEscola/atvfinalPW.gif?raw=true)
