@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Digital - Extrato</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="dashboard.html">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1>Extrato</h1>
+                </div>
+                <div class="user-info">
+                    <span id="userName">Usuário</span>
+                    <button onclick="logout()" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Sair
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="extrato-main">
+            <div class="balance-card">
+                <div class="balance-info">
+                    <h3>Saldo Atual</h3>
+                    <div class="balance-amount">
+                        <span class="currency">R$</span>
+                        <span id="balanceAmount">0,00</span>
+                    </div>
+                </div>
+                <div class="balance-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+            </div>
+
+            <div class="extrato-filters">
+                <h3>Filtros</h3>
+                <div class="filter-group">
+                    <div class="form-group">
+                        <label for="startDate">Data Inicial</label>
+                        <input type="date" id="startDate" name="startDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">Data Final</label>
+                        <input type="date" id="endDate" name="endDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="transactionType">Tipo</label>
+                        <select id="transactionType" name="transactionType">
+                            <option value="">Todos</option>
+                            <option value="pix">PIX</option>
+                            <option value="deposit">Depósito</option>
+                            <option value="withdrawal">Saque</option>
+                        </select>
+                    </div>
+                    <button onclick="filterTransactions()" class="filter-btn">
+                        <i class="fas fa-filter"></i>
+                        Filtrar
+                    </button>
+                </div>
+            </div>
+
+            <div class="extrato-summary">
+                <div class="summary-card">
+                    <h4>Entradas</h4>
+                    <span class="positive-amount" id="totalIncome">R$ 0,00</span>
+                </div>
+                <div class="summary-card">
+                    <h4>Saídas</h4>
+                    <span class="negative-amount" id="totalExpense">R$ 0,00</span>
+                </div>
+                <div class="summary-card">
+                    <h4>Saldo</h4>
+                    <span class="balance-amount" id="currentBalance">R$ 0,00</span>
+                </div>
+            </div>
+
+            <div class="extrato-list">
+                <h3>Transações</h3>
+                <div id="extratoList" class="transactions-list">
+                    <div class="no-transactions">
+                        <i class="fas fa-inbox"></i>
+                        <p>Nenhuma transação encontrada</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="extrato-actions">
+                <button onclick="loadExtrato()" class="action-btn">
+                    <i class="fas fa-sync-alt"></i>
+                    Atualizar
+                </button>
+                <button onclick="exportExtrato()" class="action-btn">
+                    <i class="fas fa-download"></i>
+                    Exportar 
+                </button>
+                <button onclick="printExtrato()" class="action-btn">
+                    <i class="fas fa-print"></i>
+                    Imprimir
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/principal.js"></script>
+    <script src="js/extrato.js"></script>
+</body>
+</html>

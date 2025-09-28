@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Digital - Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-university"></i>
+                    <h1>Banco Digital</h1>
+                </div>
+                <div class="user-info">
+                    <span id="userName">Usuário</span>
+                    <button onclick="logout()" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Sair
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-main">
+            <div class="welcome-section">
+                <h2>Bem-vindo, <span id="welcomeName">Usuário</span>!</h2>
+                <p>Gerencie suas finanças de forma simples e segura</p>
+            </div>
+
+            <div class="balance-card">
+                <div class="balance-info">
+                    <h3>Saldo Disponível</h3>
+                    <div class="balance-amount">
+                        <span class="currency">R$</span>
+                        <span id="balanceAmount">0,00</span>
+                    </div>
+                </div>
+                <div class="balance-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+            </div>
+
+            <div class="menu-grid">
+                <a href="pix.html" class="menu-card">
+                    <div class="menu-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>PIX</h3>
+                    <p>Transferências instantâneas</p>
+                </a>
+
+                <a href="extrato.html" class="menu-card">
+                    <div class="menu-icon">
+                        <i class="fas fa-list-alt"></i>
+                    </div>
+                    <h3>Extrato</h3>
+                    <p>Histórico de transações</p>
+                </a>
+
+                <div class="menu-card disabled">
+                    <div class="menu-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h3>Cartões</h3>
+                    <p>Em breve</p>
+                </div>
+
+                <div class="menu-card disabled">
+                    <div class="menu-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Investimentos</h3>
+                    <p>Em breve</p>
+                </div>
+            </div>
+
+            <div class="recent-transactions">
+                <h3>Transações Recentes</h3>
+                <div id="recentTransactions" class="transactions-list">
+                    <div class="no-transactions">
+                        <i class="fas fa-inbox"></i>
+                        <p>Nenhuma transação recente</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/principal.js"></script>
+</body>
+</html>

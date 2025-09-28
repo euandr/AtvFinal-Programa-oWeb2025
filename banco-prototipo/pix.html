@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Digital - PIX</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="dashboard.html">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1>PIX</h1>
+                </div>
+                <div class="user-info">
+                    <span id="userName">Usuário</span>
+                    <button onclick="logout()" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Sair
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="pix-main">
+            <div class="balance-card">
+                <div class="balance-info">
+                    <h3>Saldo Disponível</h3>
+                    <div class="balance-amount">
+                        <span class="currency">R$</span>
+                        <span id="balanceAmount">0,00</span>
+                    </div>
+                </div>
+                <div class="balance-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+            </div>
+
+            <div class="pix-form-container">
+                <form id="pixForm" class="pix-form">
+                    <h2>Nova Transferência PIX</h2>
+                    
+                    <div class="form-group">
+                        <label for="pixKey">Chave PIX</label>
+                        <div class="input-group">
+                            <i class="fas fa-key"></i>
+                            <input type="text" id="pixKey" name="pixKey" placeholder="Digite a chave PIX" required>
+                        </div>
+                        <small>CPF, e-mail, telefone ou chave aleatória</small>
+                        <div class="pix-examples">
+                            <button type="button" onclick="fillExampleEmail()" class="example-btn">E-mail</button>
+                            <button type="button" onclick="fillExamplePhone()" class="example-btn">Telefone</button>
+                            <button type="button" onclick="fillExampleCPF()" class="example-btn">CPF</button>
+                            <button type="button" onclick="fillExampleRandom()" class="example-btn">Chave Aleatória</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pixValue">Valor</label>
+                        <div class="input-group">
+                            <i class="fas fa-dollar-sign"></i>
+                            <input type="number" id="pixValue" name="pixValue" step="0.01" min="0.01" placeholder="0,00" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pixDescription">Descrição (opcional)</label>
+                        <div class="input-group">
+                            <i class="fas fa-comment"></i>
+                            <input type="text" id="pixDescription" name="pixDescription" placeholder="Descrição da transferência">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="pix-btn">
+                        <i class="fas fa-paper-plane"></i>
+                        Enviar PIX
+                    </button>
+
+                    <div id="pixError" class="error-message"></div>
+                    <div id="pixSuccess" class="success-message"></div>
+                </form>
+            </div>
+
+            <div class="pix-history">
+                <h3>Histórico PIX</h3>
+                <div id="pixHistory" class="transactions-list">
+                    <div class="no-transactions">
+                        <i class="fas fa-inbox"></i>
+                        <p>Nenhuma transferência PIX realizada</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/principal.js"></script>
+    <script src="js/pix.js"></script>
+</body>
+</html>
