@@ -46,17 +46,31 @@
                     <h2>Nova Transferência PIX</h2>
                     
                     <div class="form-group">
+                        <label for="pixKeyType">Tipo de Chave PIX</label>
+                        <div class="input-group">
+                            <i class="fas fa-list"></i>
+                            <select id="pixKeyType" name="pixKeyType" required onchange="onPixKeyTypeChange()">
+                                <option value="">Selecione o tipo</option>
+                                <option value="email">E-mail</option>
+                                <option value="phone">Celular</option>
+                                <option value="cpf">CPF</option>
+                                <option value="random">Chave Aleatória</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label for="pixKey">Chave PIX</label>
                         <div class="input-group">
                             <i class="fas fa-key"></i>
-                            <input type="text" id="pixKey" name="pixKey" placeholder="Digite a chave PIX" required>
+                            <input type="text" id="pixKey" name="pixKey" placeholder="Selecione o tipo primeiro" required disabled>
                         </div>
-                        <small>CPF, e-mail, telefone ou chave aleatória</small>
-                        <div class="pix-examples">
-                            <button type="button" onclick="fillExampleEmail()" class="example-btn">E-mail</button>
-                            <button type="button" onclick="fillExamplePhone()" class="example-btn">Telefone</button>
-                            <button type="button" onclick="fillExampleCPF()" class="example-btn">CPF</button>
-                            <button type="button" onclick="fillExampleRandom()" class="example-btn">Chave Aleatória</button>
+                        <small id="pixKeyHelp">Selecione o tipo de chave PIX acima</small>
+                        <div class="pix-examples" id="pixExamples" style="display: none;">
+                            <button type="button" onclick="fillExampleKey()" class="example-btn">
+                                <i class="fas fa-magic"></i>
+                                Preencher Exemplo
+                            </button>
                         </div>
                     </div>
 
@@ -64,7 +78,7 @@
                         <label for="pixValue">Valor</label>
                         <div class="input-group">
                             <i class="fas fa-dollar-sign"></i>
-                            <input type="number" id="pixValue" name="pixValue" step="0.01" min="0.01" placeholder="0,00" required>
+                            <input type="text" id="pixValue" name="pixValue" placeholder="0,00" required>
                         </div>
                     </div>
 

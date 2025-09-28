@@ -8,6 +8,12 @@ function initializePix() {
         pixForm.addEventListener('submit', handlePixTransfer);
     }
     
+    // Inicializa o campo de valor com 0,00
+    const pixValueInput = document.getElementById('pixValue');
+    if (pixValueInput) {
+        pixValueInput.value = '0,00';
+    }
+    
     loadPixHistory();
     addInputMasks();
 }
@@ -17,12 +23,18 @@ async function handlePixTransfer(e) {
     
     hideMessages();
     
+    const pixKeyType = document.getElementById('pixKeyType').value;
     const pixKey = document.getElementById('pixKey').value.trim();
-    const pixValue = parseFloat(document.getElementById('pixValue').value);
+    const pixValue = parseCurrencyValue(document.getElementById('pixValue').value);
     const pixDescription = document.getElementById('pixDescription').value.trim();
     
-    if (!validatePixKey(pixKey)) {
-        showError('pixError', 'Chave PIX inválida. Use CPF, e-mail, telefone ou chave aleatória.');
+    if (!pixKeyType) {
+        showError('pixError', 'Selecione o tipo de chave PIX.');
+        return;
+    }
+    
+    if (!validatePixKeyByType(pixKey, pixKeyType)) {
+        showError('pixError', getValidationMessageForType(pixKeyType));
         return;
     }
     
@@ -69,11 +81,29 @@ async function handlePixTransfer(e) {
 function processPixTransfer(pixKey, value, description) {
     currentUser.balance -= value;
     
-    addTransaction('pix', `PIX para ${pixKey}${description ? ' - ' + description : ''}`, -value, pixKey);
+    const pixKeyType = document.getElementById('pixKeyType').value;
+    const typeLabel = getTypeLabel(pixKeyType);
+    
+    addTransaction('pix', `PIX para ${typeLabel}: ${pixKey}${description ? ' - ' + description : ''}`, -value, pixKey);
     
     saveUserData();
     
     updateUI();
+}
+
+function getTypeLabel(type) {
+    switch (type) {
+        case 'email':
+            return 'E-mail';
+        case 'phone':
+            return 'Celular';
+        case 'cpf':
+            return 'CPF';
+        case 'random':
+            return 'Chave Aleatória';
+        default:
+            return 'Chave PIX';
+    }
 }
 
 function loadPixHistory() {
@@ -149,30 +179,172 @@ function addInputMasks() {
     const pixValueInput = document.getElementById('pixValue');
     
     if (pixKeyInput) {
-        pixKeyInput.addEventListener('blur', function(e) {
-            e.target.value = formatPixKey(e.target.value);
+        pixKeyInput.addEventListener('input', function(e) {
+            formatPixKeyByType(e.target);
         });
     }
     
     if (pixValueInput) {
         pixValueInput.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/[^\d,]/g, '');
-            
-            const commaCount = (value.match(/,/g) || []).length;
-            if (commaCount > 1) {
-                value = value.replace(/,.*,/, ',');
-            }
-            
-            if (value.includes(',')) {
-                const parts = value.split(',');
-                if (parts[1] && parts[1].length > 2) {
-                    parts[1] = parts[1].substring(0, 2);
-                    value = parts.join(',');
-                }
-            }
-            
-            e.target.value = value;
+            formatCurrencyInput(e.target);
         });
+    }
+}
+
+function formatCurrencyInput(input) {
+    // Remove tudo que não é dígito
+    let value = input.value.replace(/\D/g, '');
+    
+    // Se não há valor, define como 0
+    if (!value) {
+        input.value = '0,00';
+        return;
+    }
+    
+    // Converte para centavos (multiplica por 100 para trabalhar com inteiros)
+    let cents = parseInt(value);
+    
+    // Formata o valor
+    let formatted = formatCurrencyFromCents(cents);
+    
+    input.value = formatted;
+}
+
+function formatCurrencyFromCents(cents) {
+    // Converte centavos para reais
+    let reais = Math.floor(cents / 100);
+    let centavos = cents % 100;
+    
+    // Formata os centavos sempre com 2 dígitos
+    let centavosStr = centavos.toString().padStart(2, '0');
+    
+    // Formata os reais com separadores de milhares
+    let reaisStr = reais.toLocaleString('pt-BR');
+    
+    return `${reaisStr},${centavosStr}`;
+}
+
+function parseCurrencyValue(formattedValue) {
+    // Remove pontos (separadores de milhares) e substitui vírgula por ponto
+    let cleanValue = formattedValue.replace(/\./g, '').replace(',', '.');
+    return parseFloat(cleanValue);
+}
+
+function onPixKeyTypeChange() {
+    const pixKeyType = document.getElementById('pixKeyType').value;
+    const pixKeyInput = document.getElementById('pixKey');
+    const pixKeyHelp = document.getElementById('pixKeyHelp');
+    const pixExamples = document.getElementById('pixExamples');
+    
+    // Limpa o campo de chave
+    pixKeyInput.value = '';
+    
+    if (pixKeyType) {
+        // Habilita o campo
+        pixKeyInput.disabled = false;
+        pixKeyInput.placeholder = getPlaceholderForType(pixKeyType);
+        pixKeyHelp.textContent = getHelpTextForType(pixKeyType);
+        pixExamples.style.display = 'block';
+    } else {
+        // Desabilita o campo
+        pixKeyInput.disabled = true;
+        pixKeyInput.placeholder = 'Selecione o tipo primeiro';
+        pixKeyHelp.textContent = 'Selecione o tipo de chave PIX acima';
+        pixExamples.style.display = 'none';
+    }
+}
+
+function getPlaceholderForType(type) {
+    switch (type) {
+        case 'email':
+            return 'usuario@exemplo.com';
+        case 'phone':
+            return '(11) 99999-9999';
+        case 'cpf':
+            return '123.456.789-00';
+        case 'random':
+            return '12345678-1234-1234-1234-123456789012';
+        default:
+            return 'Digite a chave PIX';
+    }
+}
+
+function getHelpTextForType(type) {
+    switch (type) {
+        case 'email':
+            return 'Digite um e-mail válido';
+        case 'phone':
+            return 'Digite o número do celular (11 dígitos)';
+        case 'cpf':
+            return 'Digite o CPF (11 dígitos)';
+        case 'random':
+            return 'Digite a chave aleatória (36 caracteres)';
+        default:
+            return 'Selecione o tipo de chave PIX acima';
+    }
+}
+
+function formatPixKeyByType(input) {
+    const pixKeyType = document.getElementById('pixKeyType').value;
+    
+    if (!pixKeyType) return;
+    
+    let value = input.value;
+    
+    switch (pixKeyType) {
+        case 'email':
+            // Para email, apenas remove espaços e converte para minúsculo
+            input.value = value.toLowerCase().trim();
+            break;
+            
+        case 'phone':
+            // Formatação de telefone
+            input.value = formatPhoneNumber(value);
+            break;
+            
+        case 'cpf':
+            // Formatação de CPF
+            input.value = formatCPF(value);
+            break;
+            
+        case 'random':
+            // Para chave aleatória, remove caracteres especiais e limita a 36 caracteres
+            input.value = value.replace(/[^a-zA-Z0-9-]/g, '').substring(0, 36);
+            break;
+    }
+}
+
+function formatPhoneNumber(value) {
+    // Remove tudo que não é dígito
+    let numbers = value.replace(/\D/g, '');
+    
+    // Limita a 11 dígitos
+    numbers = numbers.substring(0, 11);
+    
+    if (numbers.length <= 2) {
+        return numbers;
+    } else if (numbers.length <= 7) {
+        return `(${numbers.substring(0, 2)}) ${numbers.substring(2)}`;
+    } else {
+        return `(${numbers.substring(0, 2)}) ${numbers.substring(2, 7)}-${numbers.substring(7)}`;
+    }
+}
+
+function formatCPF(value) {
+    // Remove tudo que não é dígito
+    let numbers = value.replace(/\D/g, '');
+    
+    // Limita a 11 dígitos
+    numbers = numbers.substring(0, 11);
+    
+    if (numbers.length <= 3) {
+        return numbers;
+    } else if (numbers.length <= 6) {
+        return `${numbers.substring(0, 3)}.${numbers.substring(3)}`;
+    } else if (numbers.length <= 9) {
+        return `${numbers.substring(0, 3)}.${numbers.substring(3, 6)}.${numbers.substring(6)}`;
+    } else {
+        return `${numbers.substring(0, 3)}.${numbers.substring(3, 6)}.${numbers.substring(6, 9)}-${numbers.substring(9)}`;
     }
 }
 
@@ -189,9 +361,9 @@ function generateExamplePixKey() {
 }
 
 function fillExampleValue() {
-    const examples = [50.00, 100.00, 250.00, 500.00];
+    const examples = [5000, 10000, 25000, 50000]; // Valores em centavos
     const randomValue = examples[Math.floor(Math.random() * examples.length)];
-    document.getElementById('pixValue').value = randomValue.toFixed(2);
+    document.getElementById('pixValue').value = formatCurrencyFromCents(randomValue);
 }
 
 function addExampleButtons() {
@@ -212,23 +384,96 @@ function addExampleButtons() {
     form.appendChild(exampleButtons);
 }
 
+function validatePixKeyByType(key, type) {
+    switch (type) {
+        case 'email':
+            return validateEmail(key);
+        case 'phone':
+            return validatePhone(key);
+        case 'cpf':
+            return validateCPF(key);
+        case 'random':
+            return validateRandomKey(key);
+        default:
+            return false;
+    }
+}
+
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function validatePhone(phone) {
+    const numbers = phone.replace(/\D/g, '');
+    return numbers.length === 11 && isValidDDD(numbers.substring(0, 2));
+}
+
+function validateCPF(cpf) {
+    const numbers = cpf.replace(/\D/g, '');
+    return numbers.length === 11;
+}
+
+function validateRandomKey(key) {
+    return key.length === 36 && /^[a-zA-Z0-9-]+$/.test(key);
+}
+
+function getValidationMessageForType(type) {
+    switch (type) {
+        case 'email':
+            return 'E-mail inválido. Digite um e-mail válido.';
+        case 'phone':
+            return 'Telefone inválido. Digite um número de celular válido (11 dígitos).';
+        case 'cpf':
+            return 'CPF inválido. Digite um CPF válido (11 dígitos).';
+        case 'random':
+            return 'Chave aleatória inválida. Digite uma chave de 36 caracteres.';
+        default:
+            return 'Chave PIX inválida.';
+    }
+}
+
+function fillExampleKey() {
+    const pixKeyType = document.getElementById('pixKeyType').value;
+    const pixKeyInput = document.getElementById('pixKey');
+    
+    switch (pixKeyType) {
+        case 'email':
+            pixKeyInput.value = 'usuario@exemplo.com';
+            break;
+        case 'phone':
+            pixKeyInput.value = '(11) 99999-9999';
+            break;
+        case 'cpf':
+            pixKeyInput.value = '123.456.789-00';
+            break;
+        case 'random':
+            pixKeyInput.value = generateRandomPixKey();
+            break;
+    }
+}
+
 function fillExampleEmail() {
+    document.getElementById('pixKeyType').value = 'email';
+    onPixKeyTypeChange();
     document.getElementById('pixKey').value = 'usuario@exemplo.com';
 }
 
 function fillExamplePhone() {
-    const input = document.getElementById('pixKey');
-    input.value = '11987654321';
-    input.value = formatPixKey(input.value);
+    document.getElementById('pixKeyType').value = 'phone';
+    onPixKeyTypeChange();
+    document.getElementById('pixKey').value = '(11) 99999-9999';
 }
 
 function fillExampleCPF() {
-    const input = document.getElementById('pixKey');
-    input.value = '12345678909';
-    input.value = formatPixKey(input.value);
+    document.getElementById('pixKeyType').value = 'cpf';
+    onPixKeyTypeChange();
+    document.getElementById('pixKey').value = '123.456.789-00';
 }
 
 function fillExampleRandom() {
+    document.getElementById('pixKeyType').value = 'random';
+    onPixKeyTypeChange();
     document.getElementById('pixKey').value = generateRandomPixKey();
 }
 
@@ -239,3 +484,5 @@ window.fillExampleEmail = fillExampleEmail;
 window.fillExamplePhone = fillExamplePhone;
 window.fillExampleCPF = fillExampleCPF;
 window.fillExampleRandom = fillExampleRandom;
+window.onPixKeyTypeChange = onPixKeyTypeChange;
+window.fillExampleKey = fillExampleKey;
