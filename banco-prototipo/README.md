@@ -88,5 +88,6 @@ banco-simulado/
 
 # Demonstração do Sistema
 
-![Demonstração do site](arquivosEscola/atvfinalPW.gif)
+![Demonstração do site](https://github.com/euandr/euandr/blob/main/arquivosEscola/atvfinalPW.gif?raw=true)
+
 
