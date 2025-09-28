@@ -1,16 +1,16 @@
-# Sistema Bancário Digital
+# Sistema Bancário Digital (protótipo)
 
-Um sistema web simples que simula operações bancárias básicas, incluindo PIX, desenvolvido como projeto final da disciplina.
+Um sistema web simples que simula operações bancárias básicas, incluindo PIX, desenvolvido como projeto final da disciplina "programação web".
 
 ## 🚀 Funcionalidades
 
 - **Login Seguro**: Autenticação com usuário e senha
 - **Dashboard**: Visualização do saldo e menu de funcionalidades
-- **PIX Avançado**: 
+- **PIX**: 
   - Seleção de tipo de chave PIX (E-mail, Celular, CPF, Chave Aleatória)
   - Formatação automática baseada no tipo selecionado
   - Validação específica para cada tipo de chave
-  - Formatação monetária em tempo real (da direita para esquerda)
+  - Formatação monetária (da direita para esquerda)
 - **Extrato**: Histórico completo de transações com filtros
 - **Design Responsivo**: Interface adaptável para diferentes dispositivos
 
@@ -42,6 +42,10 @@ banco-simulado/
 ```
 
 ## 🚀 Como Usar
+0. **Clone o repositório**:
+   ```bash
+   git clone https://github.com/euandr/AtvFinal-Programa-oWeb2025.git
+   cd AtvFinal-Programa-oWeb2025
 
 1. **Acesse o sistema**: Abra `login.html` no navegador
 2. **Faça login**: Use as credenciais de demonstração:
@@ -64,7 +68,6 @@ banco-simulado/
 - Valores formatados da direita para esquerda
 - Exemplo: Digite `123` → aparece `1,23`
 - Suporte a valores até R$ 999.999,99
-- Formatação em tempo real conforme digitação
 
 ### **Validação Inteligente**
 - Validação específica para cada tipo de chave
@@ -75,7 +78,6 @@ banco-simulado/
 ## 🔐 Segurança
 
 - Validação de entrada em todos os formulários
-- Sanitização de dados para prevenir XSS
 - Validação específica de chaves PIX por tipo:
   - **E-mail**: Validação de formato de e-mail
   - **Celular**: Validação de DDD e 11 dígitos
@@ -83,28 +85,6 @@ banco-simulado/
   - **Chave Aleatória**: Validação de 36 caracteres
 - Limites de valor para transferências PIX (máximo R$ 5.000,00)
 - Verificação de saldo antes de transações
-
-## 📱 Responsividade
-
-O sistema é totalmente responsivo e funciona em:
-- Desktop (1200px+)
-- Tablet (768px - 1199px)
-- Mobile (até 767px)
-
-## 🎨 Design
-
-- Interface moderna e limpa
-- Gradientes e sombras para profundidade
-- Cores consistentes e acessíveis
-- Animações suaves e transições
-- Ícones intuitivos
-- **Componentes customizados**:
-  - Select com seta personalizada e hover effects
-  - Botões com gradientes e animações
-  - Campos com formatação em tempo real
-  - Estados visuais claros (habilitado/desabilitado)
-
-
 
 ## 📄 Licença
 
